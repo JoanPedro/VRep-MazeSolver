@@ -1,3 +1,5 @@
+-- Its Left based. 
+
 function  callRotateToRight(theSalt, angle)
 
     if(e1[3] < 0) then
