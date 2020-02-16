@@ -1,5 +1,5 @@
 function  callRotateToRight(theSalt, angle)
-    stripRotate = 0
+
     theSalt = 0
     if(e1[3] < 0) then
         e1[3] = -e1[3]
@@ -11,22 +11,13 @@ function  callRotateToRight(theSalt, angle)
             theSalt = e1[3] - e[3]
         else
             theSalt = e1[3] + e[3]
-        end
-    --resultAngle = e[3] - angle
-    --sim.addStatusbarMessage(e1[3])
-    --sim.addStatusbarMessage(theSalt)
-    --sim.addStatusbarMessage(theSalt)
-    --sim.addStatusbarMessage(angle)
-    --sim.addStatusbarMessage(e[3])
-    
+        end    
     end
-    
-    stripRotate = 1
     
 end
 
 function rotateToRight(theSalt, angle)
-    
+
     if(theSalt < angle*0.95) then
         vLeft = 180*math.pi/180
         vRight = -180*math.pi/180
@@ -44,33 +35,19 @@ function rotateToRight(theSalt, angle)
     sim.setJointTargetVelocity(motorHandles[3],-vRight)
     sim.setJointTargetVelocity(motorHandles[4],vLeft)
     
-
-    
 end
 
 function  callRotateToLeft(theSalt, angle)
-    stripRotate = 0
 
     while(theSalt < (angle*0.985)) do
-            
---    if(e[1] > 0) then
---        e[1] = e[1]
---    else
---        e[1] = -e[1]
---    end
         rotateToLeft(theSalt, angle)
         if(e1[3] > 0) then
             theSalt = e1[3] + e[3]
         else
             theSalt = e[3] - e1[3]
         end
-    --resultAngle = e[3] - angle
-    --sim.addStatusbarMessage(e1[3])
-    --sim.addStatusbarMessage(theSalt)
-    --sim.addStatusbarMessage(e[3])
     end
     
-    stripRotate = 1
 end
 
 function rotateToLeft(theSalt, angle)  
@@ -98,6 +75,7 @@ end
 function callGoForward(vLeft, vRight)
 
     goForward(vLeft, vRight)
+    
 end
 
 function goForward(vLeft, vRight)
@@ -155,7 +133,6 @@ function sysCall_threadmain()
     angle = 90*math.pi/180
     stripRotate = 0
     endPoit = 0
-    -- End of once run. Its like a "Setup" on arduino IDE. 
     
     -- Start of main Loop. 
     while sim.getSimulationState()~=sim.simulation_advancing_abouttostop do
@@ -166,7 +143,6 @@ function sysCall_threadmain()
 
         
         res_2, t0, t1 = sim.readVisionSensor(uvision)
-        --sim.addStatusbarMessage(res_2)
         st = sim.getSimulationTime()
         vLeft= v0
         vRight= v0
@@ -215,4 +191,3 @@ function sysCall_threadmain()
         end
     end
 end
-
