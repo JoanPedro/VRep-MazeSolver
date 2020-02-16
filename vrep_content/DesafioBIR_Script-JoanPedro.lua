@@ -1,4 +1,4 @@
--- Its Left based. 
+-- Its Left based...
 
 function  callRotateToRight(theSalt, angle)
 
