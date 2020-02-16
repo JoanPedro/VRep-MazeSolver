@@ -10,5 +10,5 @@ Duas linhas adotadas:
 
 - `Left` - É uma linha de resolução secundária, contém uma interpretação alternativa.
 
-** Obrigado! **
+# Obrigado! 
 
