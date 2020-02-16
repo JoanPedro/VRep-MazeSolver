@@ -1,4 +1,4 @@
--- Its Left based...
+-- Its Left based... Use this like secundary.
 
 function  callRotateToRight(theSalt, angle)
 
