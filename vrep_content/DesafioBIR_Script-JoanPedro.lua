@@ -1,6 +1,5 @@
 function  callRotateToRight(theSalt, angle)
 
-    theSalt = 0
     if(e1[3] < 0) then
         e1[3] = -e1[3]
     end
@@ -11,13 +10,13 @@ function  callRotateToRight(theSalt, angle)
             theSalt = e1[3] - e[3]
         else
             theSalt = e1[3] + e[3]
-        end    
+        end
     end
     
 end
 
 function rotateToRight(theSalt, angle)
-
+    
     if(theSalt < angle*0.95) then
         vLeft = 180*math.pi/180
         vRight = -180*math.pi/180
@@ -40,6 +39,7 @@ end
 function  callRotateToLeft(theSalt, angle)
 
     while(theSalt < (angle*0.985)) do
+            
         rotateToLeft(theSalt, angle)
         if(e1[3] > 0) then
             theSalt = e1[3] + e[3]
@@ -47,7 +47,7 @@ function  callRotateToLeft(theSalt, angle)
             theSalt = e[3] - e1[3]
         end
     end
-    
+
 end
 
 function rotateToLeft(theSalt, angle)  
@@ -75,14 +75,30 @@ end
 function callGoForward(vLeft, vRight)
 
     goForward(vLeft, vRight)
-    
 end
 
 function goForward(vLeft, vRight)
+
     sim.setJointTargetVelocity(motorHandles[1],vLeft)
     sim.setJointTargetVelocity(motorHandles[2],-vRight)
     sim.setJointTargetVelocity(motorHandles[3],-vRight)
     sim.setJointTargetVelocity(motorHandles[4],vLeft)
+    
+    res, dist = sim.readProximitySensor(usensors[1])
+    if(res > 0) then
+        vLeft = math.pi
+        vRight = -math.pi
+        for i=1,3,1 do
+            vLeft=vLeft+braitenbergL[i]*detect[i]
+            vRight=vRight+braitenbergR[i]*detect[i]
+            -- vLeft=2
+            -- vRight=-2
+        end
+        sim.setJointTargetVelocity(motorHandles[1],vLeft)
+        sim.setJointTargetVelocity(motorHandles[2],-vRight)
+        sim.setJointTargetVelocity(motorHandles[3],-vRight)
+        sim.setJointTargetVelocity(motorHandles[4],vLeft)
+    end
 end
 
 function sysCall_threadmain()
@@ -93,9 +109,6 @@ function sysCall_threadmain()
     for i=1,5,1 do
         usensors[i]=sim.getObjectHandle('Robotnik_Proximity'..i)
     end
-    
-    uvision = {-1}
-    uvision = sim.getObjectHandle('Vision_sensor')
     
     motorHandles={-1,-1,-1,-1}
     barHandles={-1,-1,-1,-1}
@@ -108,12 +121,16 @@ function sysCall_threadmain()
        
     noDetectionDist = 2
     maxDetectionDist = 0.4
+    
+    -- (1) No using, test for obstacle avoidance
     detect = {0,0,0,0,0,0}
     braitenbergL={-0.4,-0.8,-1.2, -1.6}
     --braitenbergL={1,2,-2,-1}
     braitenbergR={-1.6, -1.2,-0.8,-0.4}
     --braitengergF={0.485,0.5}
     braitengergF={1,1}
+    -- end (1)
+    
     v0= 4
     
     proxSensDist = {noDetectionDist,noDetectionDist, noDetectionDist, noDetectionDist, noDetectionDist}
@@ -129,11 +146,7 @@ function sysCall_threadmain()
     forwarding = {-1,-1, -1, -1}
 
     theSalt = 0
-    theSalt2 = 0
     angle = 90*math.pi/180
-    stripRotate = 0
-    endPoit = 0
-    
     -- Start of main Loop. 
     while sim.getSimulationState()~=sim.simulation_advancing_abouttostop do
         local m=sim.getObjectMatrix(bodyElements,-1)
@@ -141,13 +154,13 @@ function sysCall_threadmain()
         m=sim.multiplyMatrices(m,m2)
         e1=sim.getEulerAnglesFromMatrix(m)
 
-        
-        res_2, t0, t1 = sim.readVisionSensor(uvision)
         st = sim.getSimulationTime()
+        
         vLeft= v0
         vRight= v0
-        s=sim.getObjectSizeFactor(bodyElements)
-        noDetectionDistance=0.05*s
+        
+        --s=sim.getObjectSizeFactor(bodyElements)
+        --noDetectionDistance=0.05*s
         for i=1,5,1 do
             res,dist=sim.readProximitySensor(usensors[i])
             if (res>0) and (dist<noDetectionDist) then
@@ -156,7 +169,9 @@ function sysCall_threadmain()
                     dist=maxDetectionDist
                 end
                 forwarding[i] = 1
+                --(1)
                 detect[i]=1-((dist-maxDetectionDist)/(noDetectionDist-maxDetectionDist))
+                --
             else
                 forwarding[i] = 0
                 detect[i]=0
