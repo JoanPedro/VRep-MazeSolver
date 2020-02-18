@@ -103,12 +103,7 @@ function sysCall_threadmain()
        
     noDetectionDist = 2
     maxDetectionDist = 0.4
-    detect = {0,0,0,0,0,0}
-    braitenbergL={-0.4,-0.8,-1.2, -1.6}
-    --braitenbergL={1,2,-2,-1}
-    braitenbergR={-1.6, -1.2,-0.8,-0.4}
-    --braitengergF={0.485,0.5}
-    braitengergF={1,1}
+    detect = {0,0,0,0,0}
     v0= 4
     
     proxSensDist = {noDetectionDist,noDetectionDist, noDetectionDist, noDetectionDist, noDetectionDist}
@@ -121,13 +116,10 @@ function sysCall_threadmain()
     sim.adjustView(floorView,frontCam,64)
     sim.adjustView(frontView,frontCam,64)
 
-    forwarding = {-1,-1, -1, -1}
+    forwarding = {-1,-1, -1, -1, -1}
 
     theSalt = 0
-    theSalt2 = 0
     angle = 90*math.pi/180
-    stripRotate = 0
-    endPoit = 0
 
     -- Start of main Loop. 
     while sim.getSimulationState()~=sim.simulation_advancing_abouttostop do
@@ -161,22 +153,19 @@ function sysCall_threadmain()
             vLeft = 0
             vRight = 0
             callGoForward(vLeft,vRight)
+            sim.wait(5)
         else
             if(forwarding[4] == 1 and forwarding[1] == 0 ) then
                 callGoForward(vLeft, vRight)
             else
-                if(forwarding[1] == 0 and (forwarding[2] + forwarding[3]) == 1*2 or (forwarding[2] + forwarding[3]) == 0 ) then
-                    callGoForward(vLeft, vRight)
-                else
-                    if(forwarding[2] == 0) then
+                if(forwarding[2] == 0) then
                         callRotateToRight(theSalt, angle)
+                else
+                    if(forwarding[1] == 0 ) then
+                        callGoForward(vLeft, vRight)
                     else
-                        if(forwarding[1] == 0 ) then
-                            callGoForward(vLeft, vRight)
-                        else
-                            if(forwarding[1] == 1) then
-                                callRotateToLeft(theSalt, angle)
-                            end
+                        if(forwarding[1] == 1) then
+                            callRotateToLeft(theSalt, angle)
                         end
                     end
                 end
