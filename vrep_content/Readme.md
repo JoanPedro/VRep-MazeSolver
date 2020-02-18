@@ -11,7 +11,7 @@ Duas linhas adotadas:
 - `Left` - É uma linha de resolução secundária, contém uma interpretação alternativa.
 
 
-# --------------------------- UPDATE `17/02` ---------------------------
+# --------------------- UPDATE `17/02` ---------------------
 
 Êxito em solucionar o desafio. 
 O Arquivo DesafioBIR_Resolvido tem a solução. 
