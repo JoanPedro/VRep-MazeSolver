@@ -44,11 +44,5 @@ Para executar o simulador, faça o seguinte:
 
 **4.** Você deve alterar o script do `Quadricopter` para realizar a **missão**.
 
-# Dúvidas
-
-Se você tiver dúvidas sobre o desafio, pode entrar em contato: `marcoreis@fieb.org.br`.
-
-Dúvidas sobre o simulador e/ou implementação **NÃO** serão respondidas por e-mail.
-
 
 **Sem esforço não há recompensa!**
